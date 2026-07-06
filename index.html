@@ -805,19 +805,28 @@
   </div>
   <script>
 
-    const allowedLicenseHashes = new Set(["ed659beb0c5d012caec39ca0f581e0df78223c2f2a21101ce4beee34ed885762", "0013604322dda38f7a2740e89f88ebffb2c1ddb0c39e2da76d0ed89e54bc956b", "f2fe319d1be6b2f4063e4217fcb9dec030a63d95f752d0f99637a171f65c2b49", "dc8577a7f8e276fdd0616157f785afe7ccd917c64e7f67082acbd8a8ebaa828c", "dbe4d7a8dd50a846beb459731110432f2460f9575bd1c6c470867828ee706299", "c1073d31a6d79eda72e05d9b990e22621decda52afca316a00a0d68e16b1ed0f", "7713427f21c91a9db1d46d0a85eb5657fc506b7f75f6982a34eb6b78bf3beabe", "d967af28de5bb84d42411fd363ae074a912b314cbf34713835cc0aece52e54d0", "1e525d69e6bda60c28c21142f3ab3c094f1630ebdc26805b1c0f7fd32801b793", "f8baf37d7823b02ba3a91d758148a349950995fafdb05f1f056bab10d21e739d", "3888bdc8ef6e6f6ab5cd0c9dcbd5c02263c5bb159f4a6648cfa9b50a395c22ad", "26cbf51b5a5f63b8fc2acd8721e78344e612730d76e9ec8c9348178bf6690a3e", "858959a37e18f99256fabbcd35c0cfdf9208193c6bddf464f935f37aeb938bc4", "e1231a2a536435913cafbae258790e9746dae20544a68d9f2b089683718796bd", "ada71790e383dae4fe2c48aca96aa15b42ec003a81953e22142cdadd3eec750a", "bd2abdeb13cef2b7782924634f603750a5a034259a345b24f72bb993526dc5b5", "2999867c94ac5f4063bca97192de6bd9c9a3e3d8169d871dc7b0c16866f7d6b4", "7ac618d77a14b197deb5ae3912cf31aa5a333a1445ad0cf181eb24ddcdae1d09", "190a8f7999b3f7ee82468240ab40b36c5b0154cf78e5135ab871041855336a32", "cd68ed73c95de5dd563261e93ea8975dcb4f631f2794a3d16d3f720080f5019b", "414f493d1baf9e655d9fd0d41ab985598d730438a0c71427c9c51ea8843e4baa", "84e675e2cad2d808e84014ec021d9021218ab75b393606de4cf5c8508806e272", "8ef9af905d5d20c9fb36f1ed825ac9d13f46a112c098f4da5cfc9b4c6a8189a4", "2fa8cd219c67e437f79ebfd0ea47c93504cfc0cba26eec92f7ddf3c6f6bed185", "77d77566f4cc41cf3b95e61c4e0a742b09def5d69b976942e3bbafc917b09ff3", "804c85fd689fac514e893657f454df0aa155b41ad4961063dc0397d892590e04", "6bcb907aaf6a1648e5ec98331ed919764f0ef11895090f682f8e52ed17936e99", "7f3f81b7e64f553a9aa9b957f86e1c4c3bc5716267ed380c6803c16a8a2750b2", "619847ce317fa23df27259516787d8b1aeabccd071e2ea155f0a5d568a1aa107", "b8266a0185ddab3d7f0ca8e72c8e28ba1c540bbd1cb1a23b1078b0f63c970ef4", "ef1396b8fc7610596acf5835c06a2aac309744296de93b19f3d34a263973362c", "74940f2b47aefee9cff1ef9f874802ba32cdde393a174a440c747a61f54740c9", "5366c2b83a240b2ea224673958f8974e4a0726a78c516a0475f91469f21de442", "86006f184826970285a2c4ff350853d82ad4cc93afbab748fd75e67dc3300239", "2d1b3225ab52cb1e4384a590c225005e2010bd0bfee2814a0e0865fd50504cba", "36c85bd43435b0100f630064c78871185f1b5e075ed99ace26ab23cebf8611b5", "4663462ad605a07d2b44f1ca7c0c2db95f44a8c6db25c3caeba9188af64924c7", "9c90cf75db83c74ca9f212c429f0f36505edb612c8f0da5d9e2f3df2338b53d1", "4729067309843abaceccd3926b31cb5f20c129201bfb42c3da3b5be01382835f", "8ae7957af6aba24f943f3bba9ad378c5d11d92d76b0d5621978fd33abd5641f6", "9f1ddc2658d84139e5aced8e2305d700fadc2ad94c8ee75cffed80037d13b104", "bb5eee4036d7a647d0c470f786086e4e7e8420ee23b1e0d3ec1a04d4d8079ca1", "db4995a7a11a79ef3800ee70dfb453638efbe09774a398c7d4178af2110b1809", "257b5395f54ecd8a2e0dfbf32e491bcbcfd485ad0b3960ef49816dd1c6852950", "fe4c0f0fd7f1caa4ba84a5f3e573950ad83b5ae47614d3d5d943bf1d66b92dc1", "96942f834e3778af68572e2939effa81269db217147de15a5dbccb20e3354565", "ea912dbbd84095a52b56dac38eb530dc218fa393b736bba4b96ad065ea9bc07e", "17b8acbc396a2fbd55c32a72422dbbce2c7d78625a2cec9f7475ff92697faa94", "9fac3d7b8e1db45030a854bcdedae8b0a2c3c2ad44a8d7399bfd09c26f5f2fc9", "ef8724731bfe4b5c217b00b9a886e1ca42b813022c27561fdedbd0cb0e04f105"]);
-    const licenseKey = "zhongyao-license-v2";
+    const licenseApiUrl = "https://zhongyao-license-backend.vercel.app";
+    const licenseKey = "zhongyao-license-v3";
+    const deviceKey = "zhongyao-device-id-v1";
     const gate = document.getElementById("licenseGate");
     const input = document.getElementById("licenseInput");
     const error = document.getElementById("licenseError");
     const normalizeLicense = (value) => value.trim().toUpperCase().replace(/\s+/g, "").replace(/[—–]/g, "-");
-    const hashText = async (value) => {
-      const bytes = new TextEncoder().encode(normalizeLicense(value));
-      const digest = await crypto.subtle.digest("SHA-256", bytes);
-      return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, "0")).join("");
+    const getDeviceId = () => {
+      let deviceId = localStorage.getItem(deviceKey);
+      if (!deviceId) {
+        deviceId = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+        localStorage.setItem(deviceKey, deviceId);
+      }
+      return deviceId;
     };
     const unlock = () => {
       gate.hidden = true;
+    };
+    const setBusy = (busy) => {
+      document.getElementById("licenseBtn").disabled = busy;
+      input.disabled = busy;
+      document.getElementById("licenseBtn").textContent = busy ? "校验中" : "激活";
     };
     if (localStorage.getItem(licenseKey) === "activated") {
       unlock();
@@ -831,13 +840,29 @@
         error.textContent = "请输入激活码。";
         return;
       }
-      const hash = await hashText(code);
-      if (allowedLicenseHashes.has(hash)) {
-        localStorage.setItem(licenseKey, "activated");
-        localStorage.setItem(`${licenseKey}-at`, new Date().toISOString());
-        unlock();
-      } else {
-        error.textContent = "激活码不正确，请检查大小写、空格或横杠。";
+      if (!licenseApiUrl) {
+        error.textContent = "激活服务还没有配置，请联系管理员。";
+        return;
+      }
+      setBusy(true);
+      try {
+        const response = await fetch(`${licenseApiUrl}/api/activate`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ code, deviceId: getDeviceId() }),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (response.ok && result.ok) {
+          localStorage.setItem(licenseKey, "activated");
+          localStorage.setItem(`${licenseKey}-at`, new Date().toISOString());
+          unlock();
+        } else {
+          error.textContent = result.message || "激活失败，请稍后再试。";
+        }
+      } catch (err) {
+        error.textContent = "无法连接激活服务，请检查网络后重试。";
+      } finally {
+        setBusy(false);
       }
     });
     input.addEventListener("keydown", (event) => {
