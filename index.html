@@ -805,6 +805,7 @@
   </div>
   <script>
 
+    const allowedLicenseHashes = new Set(["ed659beb0c5d012caec39ca0f581e0df78223c2f2a21101ce4beee34ed885762", "0013604322dda38f7a2740e89f88ebffb2c1ddb0c39e2da76d0ed89e54bc956b", "f2fe319d1be6b2f4063e4217fcb9dec030a63d95f752d0f99637a171f65c2b49", "dc8577a7f8e276fdd0616157f785afe7ccd917c64e7f67082acbd8a8ebaa828c", "dbe4d7a8dd50a846beb459731110432f2460f9575bd1c6c470867828ee706299", "c1073d31a6d79eda72e05d9b990e22621decda52afca316a00a0d68e16b1ed0f", "7713427f21c91a9db1d46d0a85eb5657fc506b7f75f6982a34eb6b78bf3beabe", "d967af28de5bb84d42411fd363ae074a912b314cbf34713835cc0aece52e54d0", "1e525d69e6bda60c28c21142f3ab3c094f1630ebdc26805b1c0f7fd32801b793", "f8baf37d7823b02ba3a91d758148a349950995fafdb05f1f056bab10d21e739d", "3888bdc8ef6e6f6ab5cd0c9dcbd5c02263c5bb159f4a6648cfa9b50a395c22ad", "26cbf51b5a5f63b8fc2acd8721e78344e612730d76e9ec8c9348178bf6690a3e", "858959a37e18f99256fabbcd35c0cfdf9208193c6bddf464f935f37aeb938bc4", "e1231a2a536435913cafbae258790e9746dae20544a68d9f2b089683718796bd", "ada71790e383dae4fe2c48aca96aa15b42ec003a81953e22142cdadd3eec750a", "bd2abdeb13cef2b7782924634f603750a5a034259a345b24f72bb993526dc5b5", "2999867c94ac5f4063bca97192de6bd9c9a3e3d8169d871dc7b0c16866f7d6b4", "7ac618d77a14b197deb5ae3912cf31aa5a333a1445ad0cf181eb24ddcdae1d09", "190a8f7999b3f7ee82468240ab40b36c5b0154cf78e5135ab871041855336a32", "cd68ed73c95de5dd563261e93ea8975dcb4f631f2794a3d16d3f720080f5019b", "414f493d1baf9e655d9fd0d41ab985598d730438a0c71427c9c51ea8843e4baa", "84e675e2cad2d808e84014ec021d9021218ab75b393606de4cf5c8508806e272", "8ef9af905d5d20c9fb36f1ed825ac9d13f46a112c098f4da5cfc9b4c6a8189a4", "2fa8cd219c67e437f79ebfd0ea47c93504cfc0cba26eec92f7ddf3c6f6bed185", "77d77566f4cc41cf3b95e61c4e0a742b09def5d69b976942e3bbafc917b09ff3", "804c85fd689fac514e893657f454df0aa155b41ad4961063dc0397d892590e04", "6bcb907aaf6a1648e5ec98331ed919764f0ef11895090f682f8e52ed17936e99", "7f3f81b7e64f553a9aa9b957f86e1c4c3bc5716267ed380c6803c16a8a2750b2", "619847ce317fa23df27259516787d8b1aeabccd071e2ea155f0a5d568a1aa107", "b8266a0185ddab3d7f0ca8e72c8e28ba1c540bbd1cb1a23b1078b0f63c970ef4", "ef1396b8fc7610596acf5835c06a2aac309744296de93b19f3d34a263973362c", "74940f2b47aefee9cff1ef9f874802ba32cdde393a174a440c747a61f54740c9", "5366c2b83a240b2ea224673958f8974e4a0726a78c516a0475f91469f21de442", "86006f184826970285a2c4ff350853d82ad4cc93afbab748fd75e67dc3300239", "2d1b3225ab52cb1e4384a590c225005e2010bd0bfee2814a0e0865fd50504cba", "36c85bd43435b0100f630064c78871185f1b5e075ed99ace26ab23cebf8611b5", "4663462ad605a07d2b44f1ca7c0c2db95f44a8c6db25c3caeba9188af64924c7", "9c90cf75db83c74ca9f212c429f0f36505edb612c8f0da5d9e2f3df2338b53d1", "4729067309843abaceccd3926b31cb5f20c129201bfb42c3da3b5be01382835f", "8ae7957af6aba24f943f3bba9ad378c5d11d92d76b0d5621978fd33abd5641f6", "9f1ddc2658d84139e5aced8e2305d700fadc2ad94c8ee75cffed80037d13b104", "bb5eee4036d7a647d0c470f786086e4e7e8420ee23b1e0d3ec1a04d4d8079ca1", "db4995a7a11a79ef3800ee70dfb453638efbe09774a398c7d4178af2110b1809", "257b5395f54ecd8a2e0dfbf32e491bcbcfd485ad0b3960ef49816dd1c6852950", "fe4c0f0fd7f1caa4ba84a5f3e573950ad83b5ae47614d3d5d943bf1d66b92dc1", "96942f834e3778af68572e2939effa81269db217147de15a5dbccb20e3354565", "ea912dbbd84095a52b56dac38eb530dc218fa393b736bba4b96ad065ea9bc07e", "17b8acbc396a2fbd55c32a72422dbbce2c7d78625a2cec9f7475ff92697faa94", "9fac3d7b8e1db45030a854bcdedae8b0a2c3c2ad44a8d7399bfd09c26f5f2fc9", "ef8724731bfe4b5c217b00b9a886e1ca42b813022c27561fdedbd0cb0e04f105", "dfebb5b04fbf6a44a603b72778a3cbdbbe0e55738cd79ae3e2e907485144feeb", "cc82a7d5cbb2509f56984210cbf22b250b6f7c775ecc5fd826bb7632bf60dc80", "322d70f31a39d028f007df768e1aba5468237eeb62a710f30390b42a7d47f370", "5354e75ba17428ff6c201258aa4302e58a4f78d28b56117f0fc8e6b2f1ae84a8", "9889797eb83d8a4424657b02542956fccda6e8bed253b10bcf2c6b0c9f596918", "5c359850dd98a34609adbcfdfe843767d5d7a4e028a59a98c501fabd42f4bda5", "3637f26f709c3f4c56fc4242567c6d8641d9b1e6529033c25e1d0b74a4cf4525", "dfc5722a39fbe7c548286f25fd41b28a7168f4cde47b7b7750a9ef20ccb6db72", "02ce3c4f5383e1ad9f6b8b47a7bf7d494f5dc2a45f20a7b4a5ed6ac50e9bba96", "df35c578cf91937ed4e65e518c66bc730d6204403e0b40f9457f3642f4248df7", "13e417f3a77f2a617d04ee7cea8954390a3fb55a65ee69752da32a6559df6103", "021983b9e02c6e9d25fb73a138ccf72d8d62141bf7a38e103d4885b3c2e9040e", "4f2e04e081467eb953c2c251b59c0e8f22885e161192060f39091b3ab8742537", "a38d5362d27c9ad1d995375d2ce7f1fb8c67d2526a228eef8f4d44180196d6f8", "c59e922de20d5ef9e52681cd278b67d5ce9b59bfeeb5e82d9c765767b4cf6846", "53ff135f4c2979bfa45afca64967d212fb713a6528188af7d0df5ab39575a39f", "970036e5bafc93817837a989fbc9080658810ec8b521fe3578e6b15ca8976c10", "7acbe9a1639fe271404d513a524880895f42b48cac2cc0ff2662dddaf6df57ed", "24fffd159fdd77f372b4ab1b6396d0d9bfbf9911f74068b69dfb6b2846eb2065", "087420c35f217b2cddcca20f821d07c4bfdaa2b9d90b755aff6d7c9d98ff666c", "dc3a844c6a3b78ef4c27b59c03fbff882fc7fa5866da3d0bb27626907a688f1b", "51fa0e99fd2949e2036911ceb7b1a6b960199b2b30d1f90c6176b5d8966dd261", "66123a5d7a2ceb2fc68a85f54c4aeb22ba4829c11c498faad46bc90a121a3929", "cd22cc2dbf3f016131b3e47a7daceffe9f03c345b856e2c974ef74047e27505b", "f7feca2ea101d49abc3c9eb1b7cfd79d5b4482bed78c4949b17e1324e4dd226b", "44bf3084b191fa6a4ec4291778b25b501851ae21785e52c3c2920e8cf77d325e", "8a28aec8f2cec6b814d5feb12813347277852c4665de7da8d3e5fa494a556804", "78eba5e17e7cd1e3cafb5e466ebf47da215f5ff2dc612371f26896b09380a69b", "051357f0a4e9742fd2595f22623287e2bffcd48d5987848e90937e3aeff2cc27", "d1c680131eacd5e41a8824c3d8ea242a7445298804d58e3661625b3e843c35fc", "1a5925ee30b32cd89f24c8cda73763cbd3ec31f08add07a0627d047b03f934da", "ce9446f16ebf197f27c2d21bc66f0490b2bde9b7f2917255a0384416b7bd4001", "f4dbd27aa40c28077e4a36b1d74c1ff28e1dfb1f25718b0e7cf021b908664246", "cc905daf627fdb71c5a30cca23d525270961da9a3600a9cf5d3f76520f83fc0d", "f07761a58137ee7742c3b6d5b9124d22e6b8416f09f6197e0a2c49560437b34e", "5997faa7a3cdfad3546ed29af448d8dc192de61fc58d8028800e277ebb174708", "682d3256c3d000fc75689f5e525e9d510994b0dcbc412af953a091ad47c0fcb4", "d404afc78b0fb40db43198f14811a31b1cb7bd867286064458a7420bcf82efdf", "82090e38c7c6dab91699e1812c85baa7b6529357a4ea2d328cc023e0d280bffc", "a0891c0970f0662b0f2474bc0ce5467d5dbb833e17c89ecd6c447317aa89fc2f", "44da5faae79b23314fbbd76afd7c89a3c3e6300cb5ef02f44cc3d7a530637512", "05a0f8a399d82bb72fa06f595452f5adb9e2166fa388ee26f481ff641f282b27", "ed2ac1df8b28571da0d754376ebf38197bdde33b3249490008bb8f21a7f75134", "5d02391f6c9409aceda167e91f30ff753c79b7daddc9e0c59805ee43492b01c1", "7cdca405c72383a0553aa266e47f67ebfb4e0fd499805b77417024cdef0b9b4b", "9232abc0b384f374b07a466eaf36bdf7c15cc19c0f89dbac94aae3638ddef01c", "b1c6f6ebd13be3e106282c68ec94546099c53e86706aef35e952dfa70e464ae6", "eb9944799f81781199a3096abe3f94f8d670da9ddb06e043cab8db7512a52b7c", "65b6cdba9ff23c4e0e264df98f4021bffbe69bc71248c56405b0854e5d763761", "b37156df72a8e7857548a8ef45435746cb363047bb2fb6a51cc6cf1c89ac6bca"]);
     const licenseApiUrl = "https://zhongyao-license-backend.vercel.app";
     const licenseKey = "zhongyao-license-v3";
     const deviceKey = "zhongyao-device-id-v1";
@@ -812,6 +813,11 @@
     const input = document.getElementById("licenseInput");
     const error = document.getElementById("licenseError");
     const normalizeLicense = (value) => value.trim().toUpperCase().replace(/\s+/g, "").replace(/[—–]/g, "-");
+    const hashText = async (value) => {
+      const bytes = new TextEncoder().encode(normalizeLicense(value));
+      const digest = await crypto.subtle.digest("SHA-256", bytes);
+      return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, "0")).join("");
+    };
     const getDeviceId = () => {
       let deviceId = localStorage.getItem(deviceKey);
       if (!deviceId) {
@@ -822,6 +828,15 @@
     };
     const unlock = () => {
       gate.hidden = true;
+    };
+    const activateLocally = async (code) => {
+      const hash = await hashText(code);
+      if (!allowedLicenseHashes.has(hash)) return false;
+      localStorage.setItem(licenseKey, "activated");
+      localStorage.setItem(`${licenseKey}-at`, new Date().toISOString());
+      localStorage.setItem(`${licenseKey}-mode`, "fallback");
+      unlock();
+      return true;
     };
     const setBusy = (busy) => {
       document.getElementById("licenseBtn").disabled = busy;
@@ -845,23 +860,31 @@
         return;
       }
       setBusy(true);
+      let timeout = null;
       try {
+        const controller = new AbortController();
+        timeout = setTimeout(() => controller.abort(), 8000);
         const response = await fetch(`${licenseApiUrl}/api/activate`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ code, deviceId: getDeviceId() }),
+          signal: controller.signal,
         });
         const result = await response.json().catch(() => ({}));
         if (response.ok && result.ok) {
           localStorage.setItem(licenseKey, "activated");
           localStorage.setItem(`${licenseKey}-at`, new Date().toISOString());
+          localStorage.setItem(`${licenseKey}-mode`, "server");
           unlock();
         } else {
           error.textContent = result.message || "激活失败，请稍后再试。";
         }
       } catch (err) {
-        error.textContent = "无法连接激活服务，请检查网络后重试。";
+        if (!(await activateLocally(code))) {
+          error.textContent = "无法连接激活服务，且备用校验未通过。请检查网络或激活码后重试。";
+        }
       } finally {
+        if (timeout) clearTimeout(timeout);
         setBusy(false);
       }
     });
