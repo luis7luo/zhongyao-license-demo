@@ -808,18 +808,21 @@
     const licenseApiUrl = "https://zhongyao-license-backend.vercel.app";
     const licenseKey = "zhongyao-license-v3";
     const deviceKey = "zhongyao-device-id-v1";
+    const activationVersion = "v1-actdiag-20260927-1";
     const gate = document.getElementById("licenseGate");
     const input = document.getElementById("licenseInput");
     const error = document.getElementById("licenseError");
     const normalizeLicense = (value) => value.trim().toUpperCase().replace(/\s+/g, "").replace(/[—–]/g, "-");
-    const getDeviceId = () => {
-      let deviceId = localStorage.getItem(deviceKey);
-      if (!deviceId) {
-        deviceId = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
-        localStorage.setItem(deviceKey, deviceId);
-      }
-      return deviceId;
+    let diagnosticSequence = 0;
+    const newAttempt = () => {
+      const started = Date.now();
+      return { started, time: new Date(started).toISOString(), id: `AD-${started.toString(36)}-${++diagnosticSequence}-${Math.random().toString(36).slice(2, 8)}` };
     };
+    const reportActivation = (attempt, stage, category, message, status) => {
+      const http = Number.isInteger(status) && status >= 100 && status <= 599 ? ` · HTTP ${status}` : "";
+      error.textContent = `${message} [${stage}/${category}${http}] 版本 ${activationVersion} · 时间 ${attempt.time} (UTC) · 耗时 ${Math.max(0, Date.now() - attempt.started)}ms · 诊断 ${attempt.id}`;
+    };
+    const hasServerApproval = () => localStorage.getItem(licenseKey) === "activated" && localStorage.getItem(`${licenseKey}-mode`) === "server";
     const unlock = () => {
       gate.hidden = true;
     };
@@ -828,13 +831,16 @@
       input.disabled = busy;
       document.getElementById("licenseBtn").textContent = busy ? "校验中" : "激活";
     };
-    if (localStorage.getItem(licenseKey) === "activated" && localStorage.getItem(`${licenseKey}-mode`) === "server") {
-      unlock();
-    } else {
-      setTimeout(() => input.focus(), 50);
+    try {
+      if (hasServerApproval()) unlock();
+      else setTimeout(() => input.focus(), 50);
+    } catch (_) {
+      reportActivation(newAttempt(), "INIT", "STORAGE", "无法读取本机授权记录，请联系支持；不要清除网站数据。");
     }
     document.getElementById("licenseBtn").addEventListener("click", async () => {
+      if (input.disabled) return;
       error.textContent = "";
+      const attempt = newAttempt();
       const code = normalizeLicense(input.value);
       if (!code) {
         error.textContent = "请输入激活码。";
@@ -850,26 +856,90 @@
       }
       setBusy(true);
       let timeout = null;
+      let stage = "INIT";
+      let category = "STORAGE";
+      let timedOut = false;
       try {
+        if (hasServerApproval()) { unlock(); return; }
+        stage = "ENV";
+        category = "API";
+        if (typeof fetch !== "function" || typeof AbortController !== "function") throw new Error();
         const controller = new AbortController();
-        timeout = setTimeout(() => controller.abort(), 8000);
-        const response = await fetch(`${licenseApiUrl}/api/activate`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ code, deviceId: getDeviceId() }),
-          signal: controller.signal,
+        stage = "DEVICE_STORAGE";
+        category = "STORAGE";
+        let deviceId = localStorage.getItem(deviceKey);
+        if (!deviceId) {
+          category = "GENERATE";
+          deviceId = typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+            ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+        }
+        category = "STORAGE";
+        if (typeof deviceId !== "string" || !deviceId.trim() || deviceId.length > 80) throw new Error();
+        localStorage.setItem(deviceKey, deviceId);
+        if (localStorage.getItem(deviceKey) !== deviceId) throw new Error();
+        stage = "REQUEST";
+        category = "NETWORK_OR_CORS";
+        const deadline = new Promise((_, reject) => {
+          timeout = setTimeout(() => {
+            timedOut = true;
+            reject(new Error());
+            try { controller.abort(); } catch (_) {}
+          }, 8000);
         });
-        const result = await response.json().catch(() => ({}));
+        const request = (async () => {
+          const response = await fetch(`${licenseApiUrl}/api/activate`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code, deviceId }),
+            signal: controller.signal,
+          });
+          let result = null;
+          try { result = await response.json(); } catch (err) {
+            if (err?.name === "TypeError" || err?.name === "AbortError") throw err;
+          }
+          return { response, result };
+        })();
+        const { response, result } = await Promise.race([request, deadline]);
+        clearTimeout(timeout);
+        timeout = null;
+        stage = "SERVER_RESPONSE";
         if (response.ok && result?.ok === true && ["activated", "already_active_on_this_device"].includes(result.status)) {
-          localStorage.setItem(licenseKey, "activated");
-          localStorage.setItem(`${licenseKey}-at`, new Date().toISOString());
+          stage = "SAVE_APPROVAL";
+          category = "STORAGE";
+          // Publish the success marker last; partial writes must never unlock on reload.
+          localStorage.setItem(licenseKey, "pending");
+          if (localStorage.getItem(licenseKey) !== "pending") throw new Error();
+          const approvedAt = new Date().toISOString();
+          localStorage.setItem(`${licenseKey}-at`, approvedAt);
           localStorage.setItem(`${licenseKey}-mode`, "server");
+          if (localStorage.getItem(`${licenseKey}-at`) !== approvedAt || localStorage.getItem(`${licenseKey}-mode`) !== "server") throw new Error();
+          localStorage.setItem(licenseKey, "activated");
+          if (localStorage.getItem(licenseKey) !== "activated") throw new Error();
           unlock();
         } else {
-          error.textContent = result?.message || "激活失败，请稍后再试。";
+          const refusals = {
+            invalid: ["INVALID", "激活码不存在，请核对后重试。"],
+            disabled: ["DISABLED", "激活码已停用，请联系支持。"],
+            device_limit_reached: ["DEVICE_LIMIT_REACHED", "激活码已达到设备上限，请联系支持。"]
+          };
+          const refusal = result?.ok === false && Object.prototype.hasOwnProperty.call(refusals, result.status) ? refusals[result.status] : null;
+          const failure = !response.ok && response.status >= 500 ? ["SERVICE", "激活服务暂时不可用，请稍后重试。"]
+            : !response.ok && refusal ? refusal : ["FORMAT", "激活服务响应异常，请联系支持。"];
+          reportActivation(attempt, stage, failure[0], failure[1], response.status);
         }
-      } catch (err) {
-        error.textContent = "无法完成在线激活，请检查网络后重试。";
+      } catch (_) {
+        if (stage === "SAVE_APPROVAL") {
+          try { localStorage.setItem(licenseKey, "pending"); } catch (_) {}
+        }
+        const messages = {
+          INIT: "无法读取本机授权记录，请联系支持；不要清除网站数据。",
+          ENV: "浏览器激活接口不可用，请联系支持。",
+          DEVICE_STORAGE: category === "GENERATE" ? "无法生成设备标识，请联系支持。" : "无法保存或读取设备标识，尚未发送激活请求，请联系支持。",
+          REQUEST: timedOut ? "本次在线验证超过8秒，请稍后重试。" : "在线请求失败，暂无法区分网络与跨域限制，请联系支持。",
+          SERVER_RESPONSE: "激活服务响应异常，请联系支持。",
+          SAVE_APPROVAL: "验证已通过，但本机保存失败，请联系支持。"
+        };
+        reportActivation(attempt, stage, timedOut ? "TIMEOUT" : category, messages[stage]);
       } finally {
         if (timeout) clearTimeout(timeout);
         setBusy(false);

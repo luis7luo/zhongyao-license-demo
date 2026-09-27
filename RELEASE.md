@@ -4,8 +4,8 @@
 V1 uses reviewed direct artifact edits. Do not regenerate it from legacy scripts.
 The three-subject repositories and external JSON files are references, not production sources.
 
-Approved local artifact baseline: `6fc8d57ba40a32b4183a29320d782a9aafc0619f`.
-SHA-256: `f390f67beba79d2c94efd45ee7b969de7a1a2d9ea478314f894615291d643be4`.
+Reviewed diagnostics candidate: `v1-actdiag-20260927-1`, based on production commit `14b37792ecd8a9e5f1fb7a08cc54657b7068d4df`.
+SHA-256: `adccc5b55d69fb2a6376290d5fb0469eecec8bcd94a1498ea6fbc75f56731976`.
 This is a local release candidate, not a claim of deployment or completed production verification.
 
 The baseline includes:
@@ -32,6 +32,7 @@ From this repository:
 ```sh
 python3 verify_release.py
 node --test ../activation-phase2.test.mjs ../review-phase3.test.mjs
+node --test activation-diagnostics.test.mjs
 git diff --check
 ```
 
@@ -40,3 +41,41 @@ The regression files remain local workspace evidence, outside this repository. A
 For an approved future direct edit, inspect the HTML diff, rerun content checks and both regression suites, then deliberately update the checksum and baseline record after review. Never update the checksum simply to make an unexplained failure pass. Keep a rollback checkpoint before publishing. Do not run a generator, push, or deploy as part of these checks.
 
 Before release: verify actual Safari/WeChat interactions, live Supabase activation/device limits and deployed configuration, and confirm the backend candidate revision. These local checks do not validate live infrastructure.
+
+## Activation diagnostics candidate, 2026-09-27
+
+Only the paid activation flow changed. Data, review behavior, HTML/CSS,
+existing storage keys, backend URL, device limits and authorization rules are unchanged.
+The diagnostics identify INIT, ENV, DEVICE_STORAGE, REQUEST, SERVER_RESPONSE,
+or SAVE_APPROVAL, with a fixed release identifier, UTC attempt time, elapsed
+milliseconds, and a random non-sensitive attempt identifier. They contain no
+code, device ID, raw exception message, storage dump or backend response text.
+No diagnostic telemetry or new request headers are sent. The identifier is
+for screenshots/support, not a server-side trace ID.
+
+The local eight-second deadline covers request and response reading. Only its
+actual firing labels TIMEOUT. NETWORK_OR_CORS deliberately remains uncertain.
+Device storage is checked before any activation request. Approval writes use
+a non-approved pending marker first and publish activated last. Storage errors
+leave the device ID intact for a same-device retry, and never cause an offline
+unlock. Already server-approved browsers retain their existing offline access.
+
+Local evidence: 73 original regression tests plus 39 diagnostic injection tests
+pass (112 total). Browser/production validation and deployment are still pending;
+do not infer a customer-device root cause or resolution from these local tests.
+The browser tool refused the local file preview under its URL security policy.
+No workaround or release was attempted. Existing dedicated production test
+codes are disabled; temporary re-enablement approval has been requested, not
+assumed. No customer code or binding was used or changed for this candidate.
+
+Rollback checkpoint: tag `paid-v1-before-actdiag-20260927`, commit
+`14b37792ecd8a9e5f1fb7a08cc54657b7068d4df`, old HTML SHA-256
+`f390f67beba79d2c94efd45ee7b969de7a1a2d9ea478314f894615291d643be4`.
+A local Git bundle is in the private workspace checkpoint directory
+`../private-checkpoints/activation-diagnostics-20260927/paid-before-diagnostics.bundle`.
+After a diagnostics-only commit is published, revert that commit with
+`git revert <diagnostics-commit>` (no force push or reset), rerun the old release
+checks, then push main and verify Pages build plus the old live checksum.
+This rolls back HTML and checksum/documentation together, without changing
+the backend, customer records, device IDs or learning storage. Before publishing
+the candidate, rollback requires no production action: the old site remains live.

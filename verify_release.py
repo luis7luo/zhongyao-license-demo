@@ -6,7 +6,7 @@ from pathlib import Path
 import re
 import sys
 
-APPROVED_SHA256 = "f390f67beba79d2c94efd45ee7b969de7a1a2d9ea478314f894615291d643be4"
+APPROVED_SHA256 = "adccc5b55d69fb2a6376290d5fb0469eecec8bcd94a1498ea6fbc75f56731976"
 API_URL = "https://zhongyao-license-backend.vercel.app"
 CORRECTIONS = {
     "沙棘": "健脾消食、止咳祛痰、活血散瘀",
