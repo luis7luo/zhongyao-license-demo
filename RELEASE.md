@@ -4,8 +4,8 @@
 V1 uses reviewed direct artifact edits. Do not regenerate it from legacy scripts.
 The three-subject repositories and external JSON files are references, not production sources.
 
-Reviewed diagnostics candidate: `v1-actdiag-20260927-1`, based on production commit `14b37792ecd8a9e5f1fb7a08cc54657b7068d4df`.
-SHA-256: `adccc5b55d69fb2a6376290d5fb0469eecec8bcd94a1498ea6fbc75f56731976`.
+Reviewed API-domain cutover candidate, based on production commit `f5581164616f3e56119b8485b9250a43237aadcf`. Diagnostic identifier remains `v1-actdiag-20260927-1`.
+SHA-256: `176176e6313f3e0741a171508ee5309afa9d3efbf6d11b0bb718c925fb94f3bc`.
 This is a local release candidate, not a claim of deployment or completed production verification.
 
 The baseline includes:
@@ -13,7 +13,24 @@ The baseline includes:
 - Seven approved corrections: 沙棘, 西洋参, 桑寄生, 何首乌, 荆芥, 半夏, 天南星; disputed mnemonics for the first two are cleared.
 - Server-approved first activation; no offline/hash fallback. Previously server-approved browsers may reopen locally.
 - Phase 3 empty-pool, keyboard-focus, stored-progress recovery, and reverse-prompt refresh fixes.
-- Production API: `https://zhongyao-license-backend.vercel.app`.
+- Production API: `https://api.beizhongyao.com`.
+
+## API-domain cutover, 2026-09-27
+
+The only HTML change is the activation API base URL. The custom hostname serves
+the existing backend Production deployment; no activation logic, timeout,
+diagnostics, storage keys, review behavior, herb data or backend policy changed.
+The original `https://zhongyao-license-backend.vercel.app` endpoint remains available.
+Health/CORS reachability alone is not proof of successful activation. Validate
+the published artifact and dedicated-code activation/reload in both the normal
+test environment and on a mainland device before claiming technical acceptance.
+
+Rollback tag `paid-v1-before-api-domain-20260927` points to
+`f5581164616f3e56119b8485b9250a43237aadcf`, HTML SHA-256
+`adccc5b55d69fb2a6376290d5fb0469eecec8bcd94a1498ea6fbc75f56731976`.
+Revert only the API-domain cutover commit, rerun all 112 tests and the restored
+release verifier, push main, and verify Pages serves that checksum. This keeps
+the activation diagnostics; the older pre-diagnostics rollback tag is unchanged.
 
 ## Legacy overwrite paths
 
